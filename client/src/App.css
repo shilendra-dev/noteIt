@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "./styles/theme.css";
+
+/* Your custom styles below */
+@layer base {
+  /* Base styles */
+}
+
+@layer components {
+  /* Component classes */
+}
+
+@layer utilities {
+  /* Utility classes */
+}
