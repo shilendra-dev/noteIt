@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: noteit_user
       POSTGRES_PASSWORD: noteit_password
     ports:
-      - '5434:5432' # Changed to avoid conflicts with other projects
+      - '5435:5432' # Changed to avoid conflicts with other projects
     volumes:
       - noteit_postgres_data:/var/lib/postgresql/data
     healthcheck:
