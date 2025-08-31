@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: noteit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: noteit_db
+      POSTGRES_USER: noteit_user
+      POSTGRES_PASSWORD: noteit_password
+    ports:
+      - '5434:5432' # Changed to avoid conflicts with other projects
+    volumes:
+      - noteit_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U noteit_user -d noteit_db']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  noteit_postgres_data:
+    driver: local
