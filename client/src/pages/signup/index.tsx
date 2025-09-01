@@ -5,23 +5,24 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 import { Dayjs } from "dayjs";
 import CustomButton from "../../components/ui/atoms/CustomButton";
+import topLogo from "../../assets/top-logo.png";
 
 export default function SignUp() {
   const [dob, setDob] = useState<Dayjs | null>(null);
 
   return (
     <div className="w-screen h-screen">
+      <img src={topLogo} alt="logo" className="fixed top-6 left-6 w-16" />
       <div className="h-full w-full flex">
-        <div className="flex flex-1 h-full flex-col p-8">
-          <h1 className="text-lg font-bold">HD</h1>
+        <div className="flex flex-1 h-full flex-col p-14">
           <div className="flex flex-col px-20 flex-1 justify-center gap-6">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold">Sign up</h1>
               <p className="text-sm text-gray-500">Sign up to enjoy the feature of HD</p>
             </div>
 
             <form className="flex flex-col gap-4">
-              <Input id="name" label="Your Name" size="small" />
+              <Input id="name" label="Your Name" size="medium" />
               <LocalizationProvider dateAdapter={AdapterDayjs}> 
                 <DatePicker
                   label="Date of Birth"
@@ -30,7 +31,7 @@ export default function SignUp() {
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      size: "small",
+                      size: "medium",
                       variant: "outlined",
                       InputProps: {
                         sx: {
@@ -41,7 +42,7 @@ export default function SignUp() {
                   }}
                 />
               </LocalizationProvider>
-              <Input id="email" label="Your Email" size="small" />
+              <Input id="email" label="Your Email" size="medium" />
 
               <CustomButton type="submit" size="large" variant="contained">
                 Get OTP
@@ -52,7 +53,13 @@ export default function SignUp() {
             </p>
           </div>
         </div>
-        <div className="w-4xl bg-amber-400 rounded-2xl mb-2 mr-2 mt-2 lg:block hidden"></div>
+        <div className="w-3xl bg-amber-400 rounded-2xl mb-2 mr-2 mt-2 lg:block hidden overflow-hidden">
+          <img
+            src="/src/assets/image_wallpaper.jpg"
+            alt="Background"
+            className="w-full h-full object-cover "
+          />
+        </div>
       </div>
     </div>
   );
