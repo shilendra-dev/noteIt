@@ -18,6 +18,7 @@ const envSchema = z.object({
     GMAIL_PASS: z.string().optional(),
 
     JWT_SECRET: z.string().optional(),
+    JWT_REFRESH_SECRET: z.string().optional(),
 });
 
 // Get environment-specific values
@@ -85,6 +86,10 @@ const parseEnv = () => {
                 jwtSecret: env.JWT_SECRET || getEnvValue(
                     { development: 'development-secret', test: 'test-secret', production: 'production-secret' },
                     'development-secret'
+                ),
+                jwtRefreshSecret: env.JWT_REFRESH_SECRET || getEnvValue(
+                    { development: 'development-refresh-secret', test: 'test-refresh-secret', production: 'production-refresh-secret' },
+                    'development-refresh-secret'
                 ),
             },
         }

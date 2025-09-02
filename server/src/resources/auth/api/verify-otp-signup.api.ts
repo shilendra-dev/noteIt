@@ -5,6 +5,7 @@ import { verifyOtp } from "../services/hashOTP";
 import { deleteOTP } from "../queries/deleteOTP";
 import { createUser } from "../queries/createUser";
 import { config } from "@/config/config.js";
+import jwt from "jsonwebtoken";
 
 interface VerifyOtpBody {
     email: string;
@@ -52,10 +53,17 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
 
                 await deleteOTP(email);
 
-                // access token
-                const accessToken = fastify.jwt.sign({ id: user.id, email: user.email }, { expiresIn: "15m" });
-                // refresh token
-                const refreshToken = fastify.jwt.sign({ id: user.id, email: user.email }, { expiresIn: "7d" });
+                const accessToken = jwt.sign(
+                    { id: user.id, email: user.email },
+                    config.security.jwtSecret,
+                    { expiresIn: "15m" }
+                );
+
+                const refreshToken = jwt.sign(
+                    { id: user.id, email: user.email },
+                    config.security.jwtRefreshSecret,
+                    { expiresIn: "7d" }
+                );
 
                 reply.setCookie("accessToken", accessToken, {
                     httpOnly: true,
