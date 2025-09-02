@@ -14,7 +14,7 @@ export const fetchOTP = async ({ email, type, includeExpired = false }: FetchOTP
       eq(otpCodes.email, email),
       eq(otpCodes.type, type),
     ];
-
+    // do not include expired otp
     if (!includeExpired) {
       conditions.push(gt(otpCodes.expiresAt, new Date()));
     }

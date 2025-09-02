@@ -16,6 +16,8 @@ const envSchema = z.object({
 
     GMAIL_USER: z.string().optional(),
     GMAIL_PASS: z.string().optional(),
+
+    JWT_SECRET: z.string().optional(),
 });
 
 // Get environment-specific values
@@ -80,6 +82,10 @@ const parseEnv = () => {
                     max: getEnvValue({ development: 10000, test: 1000, production: 5000 }, 5000),
                     timeWindow: '15 minutes' as const,
                 },
+                jwtSecret: env.JWT_SECRET || getEnvValue(
+                    { development: 'development-secret', test: 'test-secret', production: 'production-secret' },
+                    'development-secret'
+                ),
             },
         }
     } catch (error) {
