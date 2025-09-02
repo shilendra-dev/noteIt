@@ -13,7 +13,7 @@ export interface ErrorResponse {
 }
 
 export class Response {
-    static success<T>(data: T, message = 'success', code = 200): SuccessResponse<T> {
+    static success<T>(data: T, code = 200, message = 'success'): SuccessResponse<T> {
         return {
             status: 'success',
             code,

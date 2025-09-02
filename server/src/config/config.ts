@@ -13,6 +13,9 @@ const envSchema = z.object({
     DB_NAME: z.string().default('quikNote_db'),
     DB_USER: z.string().default('quikNote_user'),
     DB_PASSWORD: z.string().default('quikNote_password'),
+
+    GMAIL_USER: z.string().optional(),
+    GMAIL_PASS: z.string().optional(),
 });
 
 // Get environment-specific values
@@ -40,6 +43,10 @@ const parseEnv = () => {
                 name: env.DB_NAME,
                 user: env.DB_USER,
                 password: env.DB_PASSWORD,
+            },
+            gmailAuth: {
+                user: env.GMAIL_USER,
+                pass: env.GMAIL_PASS,
             },
             security: {
                 helmet: {

@@ -17,7 +17,7 @@ export async function getHealthAPI(fastify: TypedFastifyInstance) {
                 uptime: process.uptime(),
                 environment: process.env.NODE_ENV || 'development',
             }
-            return Response.success(health, "Service is healthy", 200)
+            return Response.success(health, 200, "Service is healthy");
         },
     )
 }
