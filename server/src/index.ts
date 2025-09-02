@@ -2,7 +2,6 @@ import 'dotenv/config';
 
 import { buildServer } from "@/server";
 import { config } from "@/config/config.js"
-
 async function start() {
     try {
         //builds server with registering plugins, routes

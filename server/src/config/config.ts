@@ -9,7 +9,7 @@ const envSchema = z.object({
 
     DATABASE_URL: z.string().optional(),
     DB_HOST: z.string().default('localhost'),
-    DB_PORT: z.string().transform(Number).default(5434),
+    DB_PORT: z.string().transform(Number).default(5435),
     DB_NAME: z.string().default('quikNote_db'),
     DB_USER: z.string().default('quikNote_user'),
     DB_PASSWORD: z.string().default('quikNote_password'),
