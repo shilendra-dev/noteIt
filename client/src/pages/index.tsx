@@ -6,7 +6,6 @@ export default function HomePage() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <h1 className="bg-amber-500">Test</h1>
     </ThemeProvider>
   )
 }
