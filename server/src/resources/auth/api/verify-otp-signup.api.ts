@@ -51,7 +51,7 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                 const isOtpValid = await verifyOtp(otp, otpData.otpHash);
 
                 if (!isOtpValid) {
-                    return reply.send(Response.error(400, "OTP is invalid"));
+                    return reply.send(Response.error(400, "OTP_Invalid"));
                 }
 
                 console.log(dobDate);

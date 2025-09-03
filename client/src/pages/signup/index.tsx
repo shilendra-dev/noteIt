@@ -5,8 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 import CustomButton from "../../components/ui/atoms/CustomButton";
 import topLogo from "../../assets/top-logo.png";
-import { Loader } from 'lucide-react';
-
+import { Loader } from "lucide-react";
 
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
@@ -38,16 +37,17 @@ export default function SignUp() {
   //states
   const [loading, setLoading] = useState(false);
   const [isOtpRequested, setIsOtpRequested] = useState(false);
+  const [otpInvalid, setOtpInvalid] = useState(false);
 
   const getOtp = async (data: SignUpFormValues) => {
     console.log("reaching getOtp: ", data);
     setLoading(true);
-    try{
+    try {
       await getOtpSignup({ email: data.email });
       setIsOtpRequested(true);
-    }catch(error){
+    } catch (error) {
       console.error(error);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -55,11 +55,11 @@ export default function SignUp() {
   const resendOtp = async () => {
     console.log("reaching resendOtp");
     setLoading(true);
-    try{
-      await getOtpSignup({ email: getValues("email")});
-    }catch(error){
+    try {
+      await getOtpSignup({ email: getValues("email") });
+    } catch (error) {
       console.error(error);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -67,21 +67,28 @@ export default function SignUp() {
   const signup = async (data: SignUpFormValues) => {
     console.log("reaching signup: ", data);
     setLoading(true);
-    try{
+    try {
       const dob = data.dob.toDate();
-      await verifyOtpSignup({ email: data.email, name: data.name, dob: dob, otp: data.otp });
-    }catch(error){
+      await verifyOtpSignup({
+        email: data.email,
+        name: data.name,
+        dob: dob,
+        otp: data.otp,
+      });
+      setOtpInvalid(false);
+    } catch (error) {
+      setOtpInvalid(true);
       console.error(error);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
 
   const onSubmit = (data: SignUpFormValues) => {
-    if(isOtpRequested){
+    if (isOtpRequested) {
       console.log("reaching onSubmit: ", data);
       signup(data);
-    }else{
+    } else {
       getOtp(data);
     }
   };
@@ -152,30 +159,44 @@ export default function SignUp() {
               />
               {isOtpRequested && (
                 <>
-                <Input
-                  id="otp"
-                  label="OTP"
-                  size="medium"
-                  error={!!errors.otp}
-                  helperText={errors.otp?.message}
-                  {...register("otp", {
-                    required: "OTP is required",
-                    pattern: {
-                      value: /^[0-9]{6}$/,
-                      message: "OTP should be 6 digits & only numbers",
-                    },
-                  })}
-                />
-                <button className="text-sm text-blue-500 underline font-medium flex" onClick={() => resendOtp()}>Resend OTP</button></>
+                  <Input
+                    id="otp"
+                    label="OTP"
+                    size="medium"
+                    error={!!errors.otp}
+                    helperText={errors.otp?.message}
+                    {...register("otp", {
+                      required: "OTP is required",
+                      pattern: {
+                        value: /^[0-9]{6}$/,
+                        message: "OTP should be 6 digits & only numbers",
+                      },
+                    })}
+                  />
+                  <button
+                    className="text-sm text-blue-500 underline font-medium flex"
+                    onClick={() => resendOtp()}
+                  >
+                    Resend OTP
+                  </button>
+                  
+                </>
               )}
-                <CustomButton
-                  type="submit"
-                  onClick={handleSubmit(onSubmit)}
-                  size="large"
-                  variant="contained"
-                >
-                  {loading ? <Loader className="animate-spin" /> : isOtpRequested ? "Sign Up" : "Get OTP"}
-                </CustomButton>
+              
+              <CustomButton
+                type="submit"
+                onClick={handleSubmit(onSubmit)}
+                size="large"
+                variant="contained"
+              >
+                {loading ? (
+                  <Loader className="animate-spin" />
+                ) : isOtpRequested ? (
+                  "Sign Up"
+                ) : (
+                  "Get OTP"
+                )}
+              </CustomButton>
             </form>
             <p className="text-center text-sm text-gray-500">
               Already have an account?{" "}
@@ -183,6 +204,7 @@ export default function SignUp() {
                 Sign in
               </a>
             </p>
+            {otpInvalid && <p className="text-red-500 text-center text-sm">Invalid OTP</p>}
           </div>
         </div>
         <div className="w-3xl bg-amber-400 rounded-2xl mb-2 mr-2 mt-2 lg:block hidden overflow-hidden">
