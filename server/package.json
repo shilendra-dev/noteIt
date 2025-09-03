@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "npm run docker:up && tsx watch src/index.ts",
     "dev:only": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node -r tsconfig-paths/register dist/index.js",
+    "build": "tsc && tsc-alias",
+    "start": "node dist/index.js",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:reset": "docker-compose down -v && docker-compose up -d",
@@ -59,6 +59,7 @@
     "@types/pg": "^8.15.5",
     "drizzle-kit": "^0.31.4",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.20.5",
     "typescript": "^5.0.0"
   },
