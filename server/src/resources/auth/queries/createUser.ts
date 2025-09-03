@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { db } from "@/db/index.js";
 import { users } from "@/db/schema.js";
 
 export async function createUser({ email, name, dob }: { email: string; name: string; dob: Date }) {

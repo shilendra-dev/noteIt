@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { db } from "@/db/index.js";
 import { otpCodes, otpTypeEnum } from "@/db/schema.js";
 
 export interface InsertOtpInput {

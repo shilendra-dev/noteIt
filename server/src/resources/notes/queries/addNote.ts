@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { db } from "@/db/index.js";
 import { notes } from "@/db/schema.js";
 
 export default async function addNote(userId: string, title: string) {
