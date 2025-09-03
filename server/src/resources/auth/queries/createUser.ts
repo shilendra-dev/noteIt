@@ -1,11 +1,12 @@
 import { db } from "@/db";
 import { users } from "@/db/schema";
 
-export async function createUser({ email, name }: { email: string; name: string }) {
+export async function createUser({ email, name, dob }: { email: string; name: string; dob: Date }) {
     try {
         const result = await db.insert(users).values({
             email,
             name,
+            dob,
         }).returning({
             id: users.id,
             email: users.email,

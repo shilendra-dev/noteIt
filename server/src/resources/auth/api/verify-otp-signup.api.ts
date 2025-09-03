@@ -11,6 +11,7 @@ interface VerifyOtpBody {
     email: string;
     otp: string;
     name: string;
+    dob: Date;
 }
 
 export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
@@ -24,10 +25,15 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
         },
         async (request, reply) => {
             try {
-                const { email, name, otp } = request.body as VerifyOtpBody;
+                const { email, dob, name, otp } = request.body as VerifyOtpBody;
+
+                const dobDate = new Date(dob); //standardizing dob
 
                 if (!email) {
                     return reply.send(Response.error(400, "Email is required"));
+                }
+                if (!dob) {
+                    return reply.send(Response.error(400, "DOB is required"));  
                 }
                 if (!name) {
                     return reply.send(Response.error(400, "Name is required"));
@@ -48,8 +54,10 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                     return reply.send(Response.error(400, "OTP is invalid"));
                 }
 
+                console.log(dobDate);
+
                 // creating user
-                const user = await createUser({ email, name });
+                const user = await createUser({ email, name, dob: dobDate });
 
                 await deleteOTP(email);
 

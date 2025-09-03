@@ -11,7 +11,7 @@ interface RequestOtpSigninBody {
 interface SignupBody {
     email: string;
     name: string;
-    dob: string;
+    dob: Date;
     otp: number;
 }
 
