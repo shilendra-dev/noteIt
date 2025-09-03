@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { config } from "@/config/config.js";
 
 interface AuthUserPayload extends JwtPayload {
   id: string;
@@ -17,16 +18,14 @@ export async function authMiddleware(
   try {
     const accessToken = req.cookies?.accessToken;
     const refreshToken = req.cookies?.refreshToken;
-
     if (!accessToken) {
       return reply.status(401).send({ message: "No access token provided" });
     }
-
     try {
       // Verify Access Token
       const decoded = jwt.verify(
         accessToken,
-        process.env.JWT_ACCESS_SECRET!
+        config.security.jwtSecret
       ) as AuthUserPayload;
 
       req.user = decoded; // attach user
@@ -46,19 +45,19 @@ export async function authMiddleware(
     try {
       const decodedRefresh = jwt.verify(
         refreshToken,
-        process.env.JWT_REFRESH_SECRET!
+        config.security.jwtRefreshSecret
       ) as AuthUserPayload;
 
       // Issue new tokens
       const newAccessToken = jwt.sign(
         { id: decodedRefresh.id, email: decodedRefresh.email },
-        process.env.JWT_ACCESS_SECRET!,
+        config.security.jwtSecret,
         { expiresIn: "15m" }
       );
 
       const newRefreshToken = jwt.sign(
         { id: decodedRefresh.id, email: decodedRefresh.email },
-        process.env.JWT_REFRESH_SECRET!,
+        config.security.jwtRefreshSecret,
         { expiresIn: "7d" }
       );
 
