@@ -5,6 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 import CustomButton from "../../components/ui/atoms/CustomButton";
 import topLogo from "../../assets/top-logo.png";
+import backgroundImage from "../../assets/image_wallpaper.jpg";
 import { Loader } from "lucide-react";
 
 import { useForm, Controller } from "react-hook-form";
@@ -210,7 +211,7 @@ export default function SignUp() {
         </div>
         <div className="w-3xl bg-amber-400 rounded-2xl mb-2 mr-2 mt-2 lg:block hidden overflow-hidden">
           <img
-            src="/src/assets/image_wallpaper.jpg"
+            src={backgroundImage}
             alt="Background"
             className="w-full h-full object-cover "
           />

@@ -1,6 +1,7 @@
 import Input from "../../components/ui/atoms/Input";
 import CustomButton from "../../components/ui/atoms/CustomButton";
 import topLogo from "../../assets/top-logo.png";
+import backgroundImage from "../../assets/image_wallpaper.jpg";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -154,7 +155,7 @@ export default function SignIn() {
         </div>
         <div className="w-3xl bg-amber-400 rounded-2xl mb-2 mr-2 mt-2 lg:block hidden overflow-hidden">
           <img
-            src="/src/assets/image_wallpaper.jpg"
+            src={backgroundImage}
             alt="Background"
             className="w-full h-full object-cover "
           />
