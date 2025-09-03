@@ -18,6 +18,5 @@ export async function registerAuthPlugins(fastify: TypedFastifyInstance) {
       expiresIn: "15m", // default access token expiry
     },
   });
-
   // You can add refresh token signing separately if needed
 }

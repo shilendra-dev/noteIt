@@ -78,6 +78,8 @@ const parseEnv = () => {
                         false as string[] | boolean,
                     ),
                     credentials: true,
+                    // allowedHeaders: ['Content-Type', 'Authorization'],
+                    exposedHeaders: ['set-cookie'],
                 },
                 rateLimit: {
                     max: getEnvValue({ development: 10000, test: 1000, production: 5000 }, 5000),

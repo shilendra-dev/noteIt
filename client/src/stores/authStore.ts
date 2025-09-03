@@ -43,11 +43,10 @@ export const useAuthStore = create<AuthStore>()(
 
       validateSession: async () => {
         try {
-          const { data } = await me();
-
-          if (data?.session && data?.user) {
+          const meRes = await me();
+          if (meRes.data) {
             set({
-              user: data.user,
+              user: meRes.data,
               isAuthenticated: true,
             });
           } else {

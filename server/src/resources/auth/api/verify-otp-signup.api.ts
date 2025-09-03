@@ -78,7 +78,7 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                     secure: config.server.environment === "production", //only true in production (https only)
                     sameSite: "strict",
                     path: "/",
-                    maxAge: 15 * 60, // 15 minutes
+                    maxAge: 60 * 60, // 60 minutes
                 });
 
                 reply.setCookie("refreshToken", refreshToken, {

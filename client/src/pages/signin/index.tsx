@@ -7,6 +7,10 @@ import { useState } from "react";
 import { getOtpSignin } from "../../api/auth";
 import { Loader } from "lucide-react";
 import { verifyOtpSignin } from "../../api/auth";
+import { useNavigate } from "react-router";
+import { useAuthStore } from "../../stores/authStore";
+import { useAuth } from "../../lib/auth/useAuth";
+import { Navigate } from "../../router";
 
 interface SignInFormValues {
   email: string;
@@ -14,6 +18,12 @@ interface SignInFormValues {
 }
 
 export default function SignIn() {
+  const { isAuthenticated } = useAuth();
+
+  if(isAuthenticated) {
+    return <Navigate to="/dashboard" />;
+  }
+  const navigate = useNavigate();
   //hook form
   const {
     handleSubmit,
@@ -25,10 +35,11 @@ export default function SignIn() {
     },
   });
 
+  const { setUser } = useAuthStore();
+
   //states
   const [loading, setLoading] = useState(false);
   const [isOtpRequested, setIsOtpRequested] = useState(false);
-
   const onSubmit = (data: SignInFormValues) => {
     if (isOtpRequested) {
       signin(data);
@@ -40,8 +51,11 @@ export default function SignIn() {
   const signin = async (data: SignInFormValues) => {
     setLoading(true);
     try {
-      await verifyOtpSignin({ email: data.email, otp: data.otp });
+      const response = await verifyOtpSignin({ email: data.email, otp: data.otp });
+      console.log("Signin res: ", response);
       setIsOtpRequested(true);
+      setUser(response.data.user);
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
     } finally {

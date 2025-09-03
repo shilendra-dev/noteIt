@@ -10,6 +10,8 @@ import { Loader } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 import { getOtpSignup, verifyOtpSignup } from "../../api/auth";
+import { Navigate, useNavigate } from "react-router";
+import { useAuth } from "../../lib/auth/useAuth";
 
 interface SignUpFormValues {
   email: string;
@@ -19,6 +21,12 @@ interface SignUpFormValues {
 }
 
 export default function SignUp() {
+  const { isAuthenticated } = useAuth();
+
+  if(isAuthenticated) {
+    return <Navigate to="/dashboard" />;
+  }
+  const navigate = useNavigate();
   //hook form
   const {
     control,
@@ -71,6 +79,7 @@ export default function SignUp() {
         dob: dob,
         otp: data.otp,
       });
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
     } finally {

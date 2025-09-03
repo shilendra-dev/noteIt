@@ -53,7 +53,7 @@ export async function verifyOtpSigninAPI(fastify: TypedFastifyInstance) {
                 const accessToken = jwt.sign(
                     { id: user.id, email: user.email },
                     config.security.jwtSecret,
-                    { expiresIn: "15m" }
+                    { expiresIn: "60m" }
                 );
 
                 const refreshToken = jwt.sign(
@@ -64,16 +64,16 @@ export async function verifyOtpSigninAPI(fastify: TypedFastifyInstance) {
 
                 reply.setCookie("accessToken", accessToken, {
                     httpOnly: true,
-                    secure: config.server.environment === "production", //only true in production (https only)
-                    sameSite: "strict",
+                    secure: true, //only true in production (https only)
+                    sameSite: "none",
                     path: "/",
-                    maxAge: 15 * 60, // 15 minutes
+                    maxAge: 60 * 60, // 60 minutes
                 });
 
                 reply.setCookie("refreshToken", refreshToken, {
                     httpOnly: true,
-                    secure: config.server.environment === "production", //only true in production (https only)
-                    sameSite: "strict",
+                    secure: true, //only true in production (https only)
+                    sameSite: "none",
                     path: "/",
                     maxAge: 7 * 24 * 60 * 60, // 7 days
                 });
