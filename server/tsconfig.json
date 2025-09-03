@@ -20,7 +20,11 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowJs": false,
-    "types": ["node"],
+    "types": ["node", "nodemailer"],
+    "typeRoots": [
+      "./node_modules/@types",
+    ],
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
@@ -32,7 +36,7 @@
       "#database/*": ["./src/lib/database/*"],
       "#mail/*": ["./src/lib/mail/*"],
       "#mail": ["./src/lib/mail/index.js"],
-      "#errors": ["./src/lib/errors.ts"],
+      "#errors": ["./src/lib/errors.ts"]
     }
   },
   "include": ["src/**/*"],

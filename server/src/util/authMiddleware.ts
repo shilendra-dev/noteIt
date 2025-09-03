@@ -5,6 +5,7 @@ import { config } from "@/config/config.js";
 interface AuthUserPayload extends JwtPayload {
   id: string;
   email: string;
+  name: string;
 }
 
 export interface AuthRequest extends FastifyRequest {
