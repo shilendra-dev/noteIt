@@ -75,16 +75,16 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
 
                 reply.setCookie("accessToken", accessToken, {
                     httpOnly: true,
-                    secure: config.server.environment === "production", //only true in production (https only)
-                    sameSite: "strict",
+                    secure: true,
+                    sameSite: "none",
                     path: "/",
                     maxAge: 60 * 60, // 60 minutes
                 });
 
                 reply.setCookie("refreshToken", refreshToken, {
                     httpOnly: true,
-                    secure: config.server.environment === "production", //only true in production (https only)
-                    sameSite: "strict",
+                    secure: true,
+                    sameSite: "none",
                     path: "/",
                     maxAge: 7 * 24 * 60 * 60, // 7 days
                 });

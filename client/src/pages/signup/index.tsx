@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import { getOtpSignup, verifyOtpSignup } from "../../api/auth";
 import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../../lib/auth/useAuth";
+import { useAuthStore } from "../../stores/authStore";
 
 interface SignUpFormValues {
   email: string;
@@ -46,6 +47,7 @@ export default function SignUp() {
   //states
   const [loading, setLoading] = useState(false);
   const [isOtpRequested, setIsOtpRequested] = useState(false);
+  const { setUser } = useAuthStore();
 
   const getOtp = async (data: SignUpFormValues) => {
     setLoading(true);
@@ -74,12 +76,13 @@ export default function SignUp() {
     setLoading(true);
     try {
       const dob = data.dob.toDate();
-      await verifyOtpSignup({
+      const response = await verifyOtpSignup({
         email: data.email,
         name: data.name,
         dob: dob,
         otp: data.otp,
       });
+      setUser(response.data.user);
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
