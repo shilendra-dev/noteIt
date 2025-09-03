@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { authMiddleware, AuthRequest } from "@/util/authMiddleware.js";
 import { Response } from "@/lib/response/response.js";
-import addNote from "../queries/addNote";
+import addNote from "../queries/addNote.js";
 
 export async function createNoteAPI(fastify: FastifyInstance) {
     fastify.post("/notes", { preHandler: authMiddleware }, async (req, reply) => {
