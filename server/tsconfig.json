@@ -20,7 +20,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowJs": false,
-    "types": ["node", "nodemailer"],
+    "types": ["node"],
     "typeRoots": [
       "./node_modules/@types",
     ],
