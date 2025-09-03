@@ -13,7 +13,7 @@ interface RequestOtpSigninBody {
 
 export async function getOtpSigninAPI(fastify: TypedFastifyInstance) {
     fastify.post(
-        '/auth/request-otp-signin ',
+        '/auth/request-otp-signin',
         {
             config: {
                 public: true,
@@ -29,7 +29,7 @@ export async function getOtpSigninAPI(fastify: TypedFastifyInstance) {
 
                 const user = await userExist(email);
                 if (!user) {
-                    return reply.send(Response.error(400, "User does not exist"));
+                    return reply.send(Response.error(400, "USER_NOT_FOUND"));
                 }
 
                 const otp = generateOtp();

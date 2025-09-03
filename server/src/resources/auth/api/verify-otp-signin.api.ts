@@ -45,7 +45,7 @@ export async function verifyOtpSigninAPI(fastify: TypedFastifyInstance) {
 
                 const isOtpValid = await verifyOtp(otp, otpData.otpHash); //verify otp
                 if (!isOtpValid) {
-                    return reply.send(Response.error(400, "OTP is invalid"));
+                    return reply.send(Response.error(400, "OTP_INVALID"));
                 }
 
                 await deleteOTP(email); //delete otp

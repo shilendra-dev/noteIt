@@ -37,10 +37,8 @@ export default function SignUp() {
   //states
   const [loading, setLoading] = useState(false);
   const [isOtpRequested, setIsOtpRequested] = useState(false);
-  const [otpInvalid, setOtpInvalid] = useState(false);
 
   const getOtp = async (data: SignUpFormValues) => {
-    console.log("reaching getOtp: ", data);
     setLoading(true);
     try {
       await getOtpSignup({ email: data.email });
@@ -53,7 +51,6 @@ export default function SignUp() {
   };
 
   const resendOtp = async () => {
-    console.log("reaching resendOtp");
     setLoading(true);
     try {
       await getOtpSignup({ email: getValues("email") });
@@ -65,7 +62,6 @@ export default function SignUp() {
   };
 
   const signup = async (data: SignUpFormValues) => {
-    console.log("reaching signup: ", data);
     setLoading(true);
     try {
       const dob = data.dob.toDate();
@@ -75,9 +71,7 @@ export default function SignUp() {
         dob: dob,
         otp: data.otp,
       });
-      setOtpInvalid(false);
     } catch (error) {
-      setOtpInvalid(true);
       console.error(error);
     } finally {
       setLoading(false);
@@ -86,7 +80,6 @@ export default function SignUp() {
 
   const onSubmit = (data: SignUpFormValues) => {
     if (isOtpRequested) {
-      console.log("reaching onSubmit: ", data);
       signup(data);
     } else {
       getOtp(data);
@@ -204,7 +197,6 @@ export default function SignUp() {
                 Sign in
               </a>
             </p>
-            {otpInvalid && <p className="text-red-500 text-center text-sm">Invalid OTP</p>}
           </div>
         </div>
         <div className="w-3xl bg-amber-400 rounded-2xl mb-2 mr-2 mt-2 lg:block hidden overflow-hidden">
