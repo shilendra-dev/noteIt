@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { buildServer } from "@/server";
+import { buildServer } from "@/server.js";
 import { config } from "@/config/config.js"
 async function start() {
     try {
