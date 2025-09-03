@@ -71,7 +71,7 @@ const parseEnv = () => {
                 cors: {
                     origin: getEnvValue(
                         {
-                            development: ['http://localhost:4000', 'http://localhost:5000'] as string[] | boolean,
+                            development: ['http://localhost:4000', 'http://localhost:5173'] as string[] | boolean,
                             test: false as string[] | boolean,
                             production: ['https://noteit.xyz', 'https://app.noteit.xyz'] as string[] | boolean, //we can change this later
                         },
