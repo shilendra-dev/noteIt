@@ -5,7 +5,7 @@ import { config } from "@/config/config.js";
 export async function logoutAPI(fastify: TypedFastifyInstance) {
     fastify.post(
         '/auth/logout',
-        async(request, reply) => {
+        async(_request, reply) => {
         try {
             // Clear access token
             reply.setCookie("accessToken", "", {
