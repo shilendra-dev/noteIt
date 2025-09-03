@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { otpCodes, otpTypeEnum } from "@/db/schema";
+import { otpCodes, otpTypeEnum } from "@/db/schema.js";
 
 export interface InsertOtpInput {
   email: string;

@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { otpCodes } from "@/db/schema";
+import { otpCodes } from "@/db/schema.js";
 import { eq, and, gt, desc } from "drizzle-orm";
 
 interface FetchOTPParams {

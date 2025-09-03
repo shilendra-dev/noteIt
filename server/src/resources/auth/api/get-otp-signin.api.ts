@@ -1,11 +1,11 @@
-import { TypedFastifyInstance } from "@/types/fastify";
+import { TypedFastifyInstance } from "@/types/fastify.js";
 import { Response } from "@/lib/response/response.js";
-import { userExist } from "../queries/userExist";
-import { generateOtp } from "../services/genterateOTP";
-import { hashOtp } from "../services/hashOTP";
-import { insertOTP } from "../queries/insertOTP";
-import { sendEmail } from "../services/sendOTP";
-import { otpEmailTemplate } from "@/lib/email/template";
+import { userExist } from "../queries/userExist.js";
+import { generateOtp } from "../services/genterateOTP.js";
+import { hashOtp } from "../services/hashOTP.js";
+import { insertOTP } from "../queries/insertOTP.js";
+import { sendEmail } from "../services/sendOTP.js";
+import { otpEmailTemplate } from "@/lib/email/template.js";
 
 interface RequestOtpSigninBody {
     email: string;

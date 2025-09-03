@@ -2,10 +2,10 @@ import type { TypedFastifyInstance } from "@/types/fastify.js";
 import { Response } from "@/lib/response/response.js";
 import { generateOtp } from "@/resources/auth/services/genterateOTP.js";
 import { hashOtp } from "@/resources/auth/services/hashOTP.js";
-import { insertOTP } from "../queries/insertOTP";
-import { sendEmail } from "@/resources/auth/services/sendOTP";
-import { otpEmailTemplate } from "@/lib/email/template";
-import { userExist } from "../queries/userExist";
+import { insertOTP } from "../queries/insertOTP.js";
+import { sendEmail } from "@/resources/auth/services/sendOTP.js";
+import { otpEmailTemplate } from "@/lib/email/template.js";
+import { userExist } from "../queries/userExist.js";
 
 interface RequestOtpSignupBody {
     email: string;

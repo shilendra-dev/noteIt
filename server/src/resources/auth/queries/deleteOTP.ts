@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { otpCodes } from "@/db/schema";
+import { otpCodes } from "@/db/schema.js";
 import { eq } from "drizzle-orm";
 
 export async function deleteOTP(email: string) {

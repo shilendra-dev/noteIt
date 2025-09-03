@@ -1,9 +1,9 @@
-import { TypedFastifyInstance } from "@/types/fastify";
+import { TypedFastifyInstance } from "@/types/fastify.js";
 import { Response } from "@/lib/response/response.js";
-import { fetchOTP } from "../queries/fetchOTP";
-import { verifyOtp } from "../services/hashOTP";
-import { deleteOTP } from "../queries/deleteOTP";
-import { createUser } from "../queries/createUser";
+import { fetchOTP } from "../queries/fetchOTP.js";
+import { verifyOtp } from "../services/hashOTP.js";
+import { deleteOTP } from "../queries/deleteOTP.js";
+import { createUser } from "../queries/createUser.js";
 import { config } from "@/config/config.js";
 import jwt from "jsonwebtoken";
 
