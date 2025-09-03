@@ -17,11 +17,14 @@ export async function getOtpSigninAPI(fastify: TypedFastifyInstance) {
         {
             config: {
                 public: true,
-                rateLimit: false,
-            }
+                rateLimit: {
+                    max: 2, // max 2 requests
+                    timeWindow: '1 minute',
+                },
+            },
         },
         async (request, reply) => {
-            try{
+            try {
                 const { email } = request.body as RequestOtpSigninBody;
 
                 const user = await userExist(email);
@@ -36,7 +39,7 @@ export async function getOtpSigninAPI(fastify: TypedFastifyInstance) {
                 await sendEmail(email, "OTP for signin", otpEmailTemplate(otp)); //sends email
 
                 return reply.send(Response.success({ success: true }, 200, "OTP sent successfully"));
-            }catch(error){
+            } catch (error) {
                 console.error(error);
                 return reply.send(Response.error(500, "Failed to send OTP"));
             }

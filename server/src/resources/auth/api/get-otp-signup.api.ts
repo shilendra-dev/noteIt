@@ -17,7 +17,10 @@ export async function getOtpSignupAPI(fastify: TypedFastifyInstance) {
         {
             config: {
                 public: true,
-                ratelimit: false,
+                ratelimit: {
+                    max: 2, // max 2 requests
+                    timeWindow: '1 minute',
+                },
             },
         },
         async (request, reply) => {
