@@ -9,6 +9,7 @@ export async function meAPI(fastify: FastifyInstance) {
 
         return reply.send(Response.success({
             id: user.id,
+            name: user.name,
             email: user.email,
         }, 200, "OTP verified successfully"));
     });

@@ -62,13 +62,13 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                 await deleteOTP(email);
 
                 const accessToken = jwt.sign(
-                    { id: user.id, email: user.email },
+                    { id: user.id, email: user.email, name: user.name },
                     config.security.jwtSecret,
-                    { expiresIn: "15m" }
+                    { expiresIn: "60m" }
                 );
 
                 const refreshToken = jwt.sign(
-                    { id: user.id, email: user.email },
+                    { id: user.id, email: user.email, name: user.name },
                     config.security.jwtRefreshSecret,
                     { expiresIn: "7d" }
                 );

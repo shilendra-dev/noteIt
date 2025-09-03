@@ -29,6 +29,7 @@ export async function authMiddleware(
       ) as AuthUserPayload;
 
       req.user = decoded; // attach user
+      console.log(decoded);
       return; // continue to route handler
     } catch (err: any) {
       if (err.name !== "TokenExpiredError") {
@@ -52,7 +53,7 @@ export async function authMiddleware(
       const newAccessToken = jwt.sign(
         { id: decodedRefresh.id, email: decodedRefresh.email },
         config.security.jwtSecret,
-        { expiresIn: "15m" }
+        { expiresIn: "60m" }
       );
 
       const newRefreshToken = jwt.sign(
@@ -67,7 +68,7 @@ export async function authMiddleware(
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         path: "/",
-        maxAge: 15 * 60, // 15 minutes
+        maxAge: 60 * 60, // 15 minutes
       });
       reply.setCookie("refreshToken", newRefreshToken, {
         httpOnly: true,
