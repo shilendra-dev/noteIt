@@ -58,12 +58,12 @@ Visit the app: [noteIt on Vercel](https://noteit-snowy.vercel.app)
 1. Install dependencies:
    ```bash
    cd client
-   yarn install
+   npm install
    ```
 
 2. Start the dev server:
    ```bash
-   yarn dev
+   npm run dev
    ```
    The app runs on [localhost:5173](http://localhost:5173).
 
@@ -72,15 +72,21 @@ Visit the app: [noteIt on Vercel](https://noteit-snowy.vercel.app)
 1. Install dependencies:
    ```bash
    cd server
-   yarn install
+   npm install
    ```
 
 2. Configure environment variables:
    - Copy `.env.example` to `.env` and fill in your secrets (JWT, DB, Google client, etc.)
 
-3. Start the server:
+3. Run migrations:
    ```bash
-   yarn start
+   npm run db:generate
+   npm run db:migrate
+   ```
+
+4. Start the server:
+   ```bash
+   npm run dev
    ```
    The API runs on [localhost:4000](http://localhost:4000).
 
@@ -137,3 +143,4 @@ Project is currently unlicensed.
 ## Contributing
 
 Feel free to fork, open issues, or suggest improvements via pull requests.
+
