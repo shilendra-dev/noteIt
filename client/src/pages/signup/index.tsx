@@ -1,113 +1,22 @@
-import Input from "../../components/ui/atoms/Input";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useState } from "react";
-import CustomButton from "../../components/ui/atoms/CustomButton";
-import topLogo from "../../assets/top-logo.png";
-import backgroundImage from "../../assets/image_wallpaper.jpg";
-import { Loader } from "lucide-react";
-
-import { useForm, Controller } from "react-hook-form";
-import dayjs from "dayjs";
-import { getOtpSignup, verifyOtpSignup } from "../../api/auth";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate } from "../../router";
 import { useAuth } from "../../lib/auth/useAuth";
-import { useAuthStore } from "../../stores/authStore";
-
-interface SignUpFormValues {
-  email: string;
-  name: string;
-  dob: any;
-  otp: number;
-}
+import SignUpForm from "../../features/signup/SignUpForm";
+import SignUpImage from "../../features/signup/SignUpImage";
+import topLogo from "../../assets/top-logo.png";
 
 export default function SignUp() {
   const { isAuthenticated } = useAuth();
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
-  }
-
-  const navigate = useNavigate();
-  const {
-    control,
-    handleSubmit,
-    register,
-    formState: { errors },
-    getValues,
-  } = useForm<SignUpFormValues>({
-    defaultValues: {
-      name: "",
-      email: "",
-      dob: "",
-    },
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [isOtpRequested, setIsOtpRequested] = useState(false);
-  const { setUser } = useAuthStore();
-
-  const getOtp = async (data: SignUpFormValues) => {
-    setLoading(true);
-    try {
-      await getOtpSignup({ email: data.email });
-      setIsOtpRequested(true);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resendOtp = async () => {
-    setLoading(true);
-    try {
-      await getOtpSignup({ email: getValues("email") });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signup = async (data: SignUpFormValues) => {
-    setLoading(true);
-    try {
-      const dob = data.dob.toDate();
-      const response = await verifyOtpSignup({
-        email: data.email,
-        name: data.name,
-        dob: dob,
-        otp: data.otp,
-      });
-      setUser(response.data.user);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onSubmit = (data: SignUpFormValues) => {
-    if (isOtpRequested) {
-      signup(data);
-    } else {
-      getOtp(data);
-    }
-  };
+  if (isAuthenticated) return <Navigate to="/dashboard" />;
 
   return (
     <div className="w-screen h-screen flex flex-col lg:flex-row">
-      {/* Left Side (Form + Logo) */}
+      {/* Left Side: Logo + Form */}
       <div className="flex flex-1 mt-16 sm:mt-0 lg:h-full flex-col p-4 sm:p-10 lg:p-14 lg:justify-center items-center lg:items-center">
-        {/* Logo */}
         <img
           src={topLogo}
           alt="logo"
           className="w-16 mb-6 lg:mb-0 lg:absolute lg:top-6 lg:left-6"
         />
-
         <div className="flex flex-col w-full max-w-md px-4 sm:px-10 lg:px-20 gap-6">
           <div className="flex flex-col gap-2 text-center lg:text-left">
             <h1 className="text-2xl sm:text-3xl font-bold">Sign up</h1>
@@ -115,102 +24,7 @@ export default function SignUp() {
               Sign up to enjoy the feature of HD
             </p>
           </div>
-
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <Input
-              id="name"
-              label="Your Name"
-              size="medium"
-              error={!!errors.name}
-              helperText={errors.name?.message}
-              {...register("name", { required: "Name is required" })}
-            />
-
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Controller
-                name="dob"
-                control={control}
-                rules={{ required: "Date of birth is required" }}
-                render={({ field }) => (
-                  <DatePicker
-                    label="Date of Birth"
-                    value={dayjs(field.value)}
-                    onChange={field.onChange}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        size: "medium",
-                        variant: "outlined",
-                        error: !!errors.dob,
-                        InputProps: {
-                          sx: { borderRadius: "0.5rem" },
-                        },
-                      },
-                    }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-
-            <Input
-              id="email"
-              label="Your Email"
-              size="medium"
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Invalid email format",
-                },
-              })}
-            />
-
-            {isOtpRequested && (
-              <>
-                <Input
-                  id="otp"
-                  label="OTP"
-                  size="medium"
-                  error={!!errors.otp}
-                  helperText={errors.otp?.message}
-                  {...register("otp", {
-                    required: "OTP is required",
-                    pattern: {
-                      value: /^[0-9]{6}$/,
-                      message: "OTP should be 6 digits & only numbers",
-                    },
-                  })}
-                />
-                <button
-                  type="button"
-                  className="text-sm text-blue-500 underline font-medium flex justify-center lg:justify-start"
-                  onClick={resendOtp}
-                >
-                  Resend OTP
-                </button>
-              </>
-            )}
-
-            <CustomButton
-              type="submit"
-              size="large"
-              variant="contained"
-            >
-              {loading ? (
-                <Loader className="animate-spin" />
-              ) : isOtpRequested ? (
-                "Sign Up"
-              ) : (
-                "Get OTP"
-              )}
-            </CustomButton>
-          </form>
-
+          <SignUpForm />
           <p className="text-center lg:text-left text-sm text-gray-500">
             Already have an account?{" "}
             <a href="/signin" className="text-blue-500 underline font-bold">
@@ -220,14 +34,8 @@ export default function SignUp() {
         </div>
       </div>
 
-      {/* Right Side (Image only on large screens) */}
-      <div className="hidden lg:block w-1/2 rounded-2xl m-2 overflow-hidden">
-        <img
-          src={backgroundImage}
-          alt="Background"
-          className="w-full h-full object-cover"
-        />
-      </div>
+      {/* Right Side Image */}
+      <SignUpImage />
     </div>
   );
 }
