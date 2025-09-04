@@ -1,28 +1,23 @@
 import type { TypedFastifyInstance } from "@/types/fastify.js";
 import { Response } from "@/lib/response/response.js";
-import { config } from "@/config/config.js";
 
 export async function logoutAPI(fastify: TypedFastifyInstance) {
     fastify.post(
         '/auth/logout',
         async(_request, reply) => {
         try {
-            // Clear access token
-            reply.setCookie("accessToken", "", {
-                httpOnly: true,
-                secure: config.server.environment === "production", // match your previous config
-                sameSite: "strict",
+            reply.clearCookie("accessToken", {
                 path: "/",
-                maxAge: 0, // expire immediately
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
             });
 
-            // Clear refresh token
-            reply.setCookie("refreshToken", "", {
-                httpOnly: true,
-                secure: config.server.environment === "production",
-                sameSite: "strict",
+            reply.clearCookie("refreshToken", {
                 path: "/",
-                maxAge: 0,
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
             });
 
             return reply.code(200).send(Response.success({}, 200, "Logged out successfully"));

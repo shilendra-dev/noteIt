@@ -66,15 +66,15 @@ export async function authMiddleware(
       // Set new tokens in cookies
       reply.setCookie("accessToken", newAccessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         path: "/",
-        maxAge: 60 * 60, // 15 minutes
+        maxAge: 60 * 60, // 60 minutes
       });
       reply.setCookie("refreshToken", newRefreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         path: "/",
         maxAge: 7 * 24 * 60 * 60, // 7 days
       });
