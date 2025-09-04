@@ -27,31 +27,31 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
             try {
                 const { email, dob, name, otp } = request.body as VerifyOtpBody;
 
-                const dobDate = new Date(dob); //standardizing dob
+                const dobDate = new Date(dob); 
 
                 if (!email) {
-                    return reply.send(Response.error(400, "Email is required"));
+                    return reply.code(400).send(Response.error(400, "EMAIL_REQUIRED"));
                 }
                 if (!dob) {
-                    return reply.send(Response.error(400, "DOB is required"));  
+                    return reply.code(400).send(Response.error(400, "DOB_REQUIRED"));  
                 }
                 if (!name) {
-                    return reply.send(Response.error(400, "Name is required"));
+                    return reply.code(400).send(Response.error(400, "NAME_REQUIRED"));
                 }
                 if (!otp) {
-                    return reply.send(Response.error(400, "OTP is required"));
+                    return reply.code(400).send(Response.error(400, "OTP_REQUIRED"));
                 }
 
                 const otpData = await fetchOTP({ email, type: "signup" });
 
                 if (!otpData) {
-                    return reply.send(Response.error(400, "email or otp is invalid"));
+                    return reply.code(409).send(Response.error(409, "EMAIL_OR_OTP_INVALID"));
                 }
 
                 const isOtpValid = await verifyOtp(otp, otpData.otpHash);
 
                 if (!isOtpValid) {
-                    return reply.send(Response.error(400, "OTP_Invalid"));
+                    return reply.code(409).send(Response.error(409, "OTP_INVALID"));
                 }
 
                 console.log(dobDate);
@@ -89,10 +89,10 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                     maxAge: 7 * 24 * 60 * 60, // 7 days
                 });
 
-                return reply.send(Response.success({ user }, 200, "OTP verified successfully"));
+                return reply.code(200).send(Response.success({ user }, 200, "OTP verified successfully"));
             } catch (error) {
                 console.error(error);
-                return reply.send(Response.error(500, "Failed to verify OTP"));
+                return reply.code(500).send(Response.error(500, "OTP_VERIFY_FAILED"));
             }
         }
     )

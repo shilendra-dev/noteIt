@@ -25,10 +25,10 @@ export async function logoutAPI(fastify: TypedFastifyInstance) {
                 maxAge: 0,
             });
 
-            return reply.send(Response.success({}, 200, "Logged out successfully"));
+            return reply.code(200).send(Response.success({}, 200, "Logged out successfully"));
         } catch(error) {
             console.error(error);
-            return reply.send(Response.error(500, "Failed to logout"));
+            return reply.code(500).send(Response.error(500, "Failed to logout"));
         }
     }
     );

@@ -26,29 +26,29 @@ export async function verifyOtpSigninAPI(fastify: TypedFastifyInstance) {
                 const { email, otp } = request.body as VerifyOtpBody;
 
                 if (!email) {
-                    return reply.send(Response.error(400, "Email is required"));
+                    return reply.code(400).send(Response.error(400, "EMAIL_REQUIRED"));
                 }
                 if (!otp) {
-                    return reply.send(Response.error(400, "OTP is required"));
+                    return reply.code(400).send(Response.error(400, "OTP_REQUIRED"));
                 }
 
                 const user = await fetchUserByEmail(email);
                 if (!user) {
-                    return reply.send(Response.error(400, "User does not exist"));
+                    return reply.code(404).send(Response.error(404, "USER_NOT_FOUND"));
                 }
 
                 const otpData = await fetchOTP({ email, type: "signin" });
 
                 if (!otpData) {
-                    return reply.send(Response.error(400, "email or otp is invalid"));
+                    return reply.code(400).send(Response.error(400, "EMAIL_OR_OTP_INVALID"));
                 }
 
-                const isOtpValid = await verifyOtp(otp, otpData.otpHash); //verify otp
+                const isOtpValid = await verifyOtp(otp, otpData.otpHash); 
                 if (!isOtpValid) {
-                    return reply.send(Response.error(400, "OTP_INVALID"));
+                    return reply.code(400).send(Response.error(400, "OTP_INVALID"));
                 }
 
-                await deleteOTP(email); //delete otp
+                await deleteOTP(email); 
 
                 const accessToken = jwt.sign(
                     { id: user.id, email: user.email, name: user.name },
@@ -64,24 +64,24 @@ export async function verifyOtpSigninAPI(fastify: TypedFastifyInstance) {
 
                 reply.setCookie("accessToken", accessToken, {
                     httpOnly: true,
-                    secure: true, //only true in production (https only)
+                    secure: true, 
                     sameSite: "none",
                     path: "/",
-                    maxAge: 60 * 60, // 60 minutes
+                    maxAge: 60 * 60, 
                 });
 
                 reply.setCookie("refreshToken", refreshToken, {
                     httpOnly: true,
-                    secure: true, //only true in production (https only)
+                    secure: true, 
                     sameSite: "none",
                     path: "/",
-                    maxAge: 7 * 24 * 60 * 60, // 7 days
+                    maxAge: 7 * 24 * 60 * 60, 
                 });
 
-                return reply.send(Response.success({ user }, 200, "OTP verified successfully"));
+                return reply.code(200).send(Response.success({ user }, 200, "OTP verified successfully"));
             } catch (error) {
                 console.error(error);
-                return reply.send(Response.error(500, "Failed to verify OTP"));
+                return reply.code(500).send(Response.error(500, "OTP_VERIFY_FAILED"));
             }
         }
     )

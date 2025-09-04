@@ -9,13 +9,13 @@ export async function getNotesAPI(fastify: FastifyInstance) {
             const { user } = req as AuthRequest;
             
             const result = await getNotes(user.id);
-            return reply.send(Response.success({
+            return reply.code(200).send(Response.success({
                 message: "Notes fetched successfully",
                 notes: result,
             }, 200, "Notes fetched successfully"));
         }catch(error){
             console.error(error);
-            return reply.send(Response.error(500, "Failed to fetch notes"));
+            return reply.code(500).send(Response.error(500, "FAILED_TO_FETCH_NOTES"));
         }
     });
 }

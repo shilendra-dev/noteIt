@@ -14,26 +14,17 @@ interface RequestOtpSignupBody {
 export async function getOtpSignupAPI(fastify: TypedFastifyInstance) {
     fastify.post(
         '/auth/request-otp-signup',
-        {
-            config: {
-                public: true,
-                ratelimit: {
-                    max: 2, // max 2 requests
-                    timeWindow: '1 minute',
-                },
-            },
-        },
         async (request, reply) => {
             try {
                 const { email } = request.body as RequestOtpSignupBody;
 
                 if(!email){
-                    return reply.send(Response.error(400, "Email is required"));
+                    return reply.code(400).send(Response.error(400, "EMAIL_REQUIRED"));
                 }
 
                 const user = await userExist(email);
                 if(user){
-                    return reply.send(Response.error(400, "User already exists"));
+                    return reply.code(409).send(Response.error(409, "USER_ALREADY_EXISTS"));
                 }
 
                 const otp = generateOtp();
@@ -42,10 +33,10 @@ export async function getOtpSignupAPI(fastify: TypedFastifyInstance) {
                 
                 await sendEmail(email, "OTP for signup", otpEmailTemplate(otp));
 
-                return reply.send(Response.success({}, 200, "OTP sent successfully"));
+                return reply.code(200).send(Response.success({}, 200, "OTP sent successfully"));
             }catch(error){
                 console.error(error);
-                return reply.send(Response.error(500, "Failed to send OTP"));
+                return reply.code(500).send(Response.error(500, "OTP_SEND_FAILED"));
             }
         },
     )
