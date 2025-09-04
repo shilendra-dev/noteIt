@@ -30,7 +30,6 @@ export async function authMiddleware(
       ) as AuthUserPayload;
 
       req.user = decoded; // attach user
-      console.log(decoded);
       return; // continue to route handler
     } catch (err: any) {
       if (err.name !== "TokenExpiredError") {

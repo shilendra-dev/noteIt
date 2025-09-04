@@ -19,6 +19,12 @@ const envSchema = z.object({
 
     JWT_SECRET: z.string().optional(),
     JWT_REFRESH_SECRET: z.string().optional(),
+
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    GOOGLE_CLIENT_SECRET: z.string().optional(),
+    GOOGLE_REDIRECT_URI: z.string().optional(),
+
+    FRONTEND_URL: z.string().optional(),
 });
 
 // Get environment-specific values
@@ -37,6 +43,9 @@ const parseEnv = () => {
                 host: env.HOST,
                 environment: env.NODE_ENV,
             },
+            client: {
+                url: env.FRONTEND_URL,
+            },
             database: {
                 url:
                     env.DATABASE_URL ||
@@ -46,6 +55,11 @@ const parseEnv = () => {
                 name: env.DB_NAME,
                 user: env.DB_USER,
                 password: env.DB_PASSWORD,
+            },
+            googleAuth: {
+                clientId: env.GOOGLE_CLIENT_ID,
+                clientSecret: env.GOOGLE_CLIENT_SECRET,
+                redirectUri: env.GOOGLE_REDIRECT_URI,
             },
             gmailAuth: {
                 user: env.GMAIL_USER,

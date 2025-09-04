@@ -71,3 +71,25 @@ export const signOut = async () => {
         console.error(error);
     }
 }
+
+export const googleOauth = async () => {
+    try {
+        const response = await axiosInstance.get(`/auth/google`);
+        return response.data;
+    } catch (error: any) {
+        const message = error.response?.data?.message || error.message;
+        console.error(message);
+        throw new Error(message);
+    }
+}
+
+export const googleRedirect = async () => {
+    try {
+        const response = await axiosInstance.get(`/auth/callback/google`);
+        return response.data;
+    } catch (error: any) {
+        const message = error.response?.data?.message || error.message;
+        console.error(message);
+        throw new Error(message);
+    }
+}

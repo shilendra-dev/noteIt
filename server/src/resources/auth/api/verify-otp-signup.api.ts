@@ -54,8 +54,6 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                     return reply.code(409).send(Response.error(409, "OTP_INVALID"));
                 }
 
-                console.log(dobDate);
-
                 // creating user
                 const user = await createUser({ email, name, dob: dobDate });
 

@@ -17,7 +17,7 @@ export default function SignIn() {
           alt="logo"
           className="w-16 mb-6 lg:mb-0 lg:absolute lg:top-6 lg:left-6"
         />
-        <div className="flex flex-col w-full max-w-md px-4 sm:px-10 lg:px-20 gap-6">
+        <div className="flex flex-col w-full max-w-md px-4 sm:px-10 lg:px-10 gap-6">
           <div className="flex flex-col gap-2 text-center lg:text-left">
             <h1 className="text-2xl sm:text-3xl font-bold">Sign in</h1>
             <p className="text-sm text-gray-500">

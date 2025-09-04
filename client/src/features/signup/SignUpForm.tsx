@@ -10,6 +10,8 @@ import { useState } from "react";
 import { getOtpSignup, verifyOtpSignup } from "../../api/auth";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "../../stores/authStore";
+import GoogleAuthButton from "../../components/ui/atoms/GoogleAuthButton";
+import { OrSeparator } from "../../components/ui/atoms/OrSeperator";
 
 interface SignUpFormValues {
   email: string;
@@ -74,6 +76,14 @@ export default function SignUpForm() {
   const onSubmit = (data: SignUpFormValues) => {
     if (isOtpRequested) signup(data);
     else getOtp(data);
+  };
+
+  const handleGoogleSignUp = () => {
+    try {
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -155,6 +165,15 @@ export default function SignUpForm() {
       <CustomButton type="submit" size="large" variant="contained">
         {loading ? <Loader className="animate-spin" /> : isOtpRequested ? "Sign Up" : "Get OTP"}
       </CustomButton>
+      <OrSeparator/>
+      <GoogleAuthButton type="button" size="large" variant="outlined" onClick={handleGoogleSignUp}>
+        <img
+          src="https://developers.google.com/identity/images/g-logo.png"
+          alt="Google logo"
+          className="w-5 h-5 mr-2"
+        />
+        Google Sign Up
+      </GoogleAuthButton>
     </form>
   );
 }
