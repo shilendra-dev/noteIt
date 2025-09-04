@@ -221,7 +221,7 @@ export default function SignUp() {
       </div>
 
       {/* Right Side (Image only on large screens) */}
-      <div className="hidden lg:block w-3xl bg-amber-400 rounded-2xl m-2 overflow-hidden">
+      <div className="hidden lg:block w-1/2 rounded-2xl m-2 overflow-hidden">
         <img
           src={backgroundImage}
           alt="Background"

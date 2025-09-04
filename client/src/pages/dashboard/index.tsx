@@ -8,6 +8,7 @@ import { createNote, getNotes, deleteNote } from "../../api/note";
 import { useState, useEffect } from "react";
 import { Trash } from "lucide-react";
 import { Modal } from "@mui/material";
+import { signOut } from "../../api/auth";
 
 interface NoteFormValues {
   title: string;
@@ -61,6 +62,15 @@ function Dashboard() {
     loadNotes();
   }, []);
 
+  const handleSignOut = async () => {
+    try{
+      await signOut();
+      window.location.reload();
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="flex flex-col h-screen w-screen">
       {/* Header */}
@@ -69,7 +79,7 @@ function Dashboard() {
           <img src={logoIcon} alt="logo" className="w-5 h-5 sm:w-8 sm:h-8" />
           <h1 className="text-md sm:text-2xl font-semibold">Dashboard</h1>
         </div>
-        <button className="underline text-blue-500 font-medium text-sm sm:text-lg hover:cursor-pointer">
+        <button className="underline text-blue-500 font-medium text-sm sm:text-lg hover:cursor-pointer" onClick={() => handleSignOut()}>
           Sign out
         </button>
       </div>

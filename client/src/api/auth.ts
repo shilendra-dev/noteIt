@@ -64,3 +64,10 @@ export const verifyOtpSignin = async (body: SigninBody) => {
     }
 }
 
+export const signOut = async () => {
+    try {
+        await axiosInstance.post(`/auth/logout`);
+    } catch (error) {
+        console.error(error);
+    }
+}
