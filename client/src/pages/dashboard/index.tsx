@@ -15,31 +15,19 @@ export default withAuth(function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const loadNotes = async () => {
-    try {
-      const resData = await getNotes();
-      setNotes(resData.data.notes || []);
-    } catch (error) {
-      console.error(error);
-    }
+    const notes = await getNotes();
+    setNotes(notes || []);
   };
 
   const handleDeleteNote = async (noteId: string) => {
-    try {
-      await deleteNote(noteId);
-      loadNotes();
-    } catch (error) {
-      console.error(error);
-    }
+    await deleteNote(noteId);
+    loadNotes();
   };
 
   const handleCreateNote = async (data: { title: string }) => {
-    try {
-      await createNote(data);
-      loadNotes();
-      setModalOpen(false);
-    } catch (error) {
-      console.error(error);
-    }
+    await createNote(data);
+    loadNotes();
+    setModalOpen(false);
   };
 
   const handleSignOut = async () => {

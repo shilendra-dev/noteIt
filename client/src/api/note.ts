@@ -1,35 +1,22 @@
-import axiosInstance from "../lib/axiosInstance";
+import { apiCall } from "../utils/apiCall";
 
 export const createNote = async (body: { title: string }) => {
-    try {
-        const response = await axiosInstance.post(`/notes`, body);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
+    const data = await apiCall<{ id: string; title: string }>("post", "/notes", body);
+    return data;
 }
 
 export const getNotes = async () => {
-    try {
-        const response = await axiosInstance.get(`/notes`);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
+    const result = await apiCall<{ data: { notes: { id: string; userId: string; title: string }[]; message: string; } }>("get", "/notes");
+    if (result.success) {
+        const notes = result.data.data.notes;
+        return notes;
+    } else {
+        console.error(result.error);
+        return [];
     }
 }
 
 export const deleteNote = async (noteId: string) => {
-    try {
-        const response = await axiosInstance.delete(`/notes/${noteId}`);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
+    const data = await apiCall<{ message: string }>("delete", `/notes/${noteId}`);
+    return data;
 }
-    
