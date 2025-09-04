@@ -2,13 +2,10 @@ import Input from "../../components/ui/atoms/Input";
 import CustomButton from "../../components/ui/atoms/CustomButton";
 import { FormControlLabel, Checkbox } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { Loader } from "lucide-react";
-import { getOtpSignin, verifyOtpSignin } from "../../api/auth";
-import { useNavigate } from "react-router";
-import { useAuthStore } from "../../stores/authStore";
 import GoogleAuthButton from "../../components/ui/atoms/GoogleAuthButton";
 import { OrSeparator } from "../../components/ui/atoms/OrSeperator";
+import { useSignIn } from "../../hooks/useSignIn";
 
 interface SignInFormValues {
   email: string;
@@ -16,57 +13,17 @@ interface SignInFormValues {
 }
 
 export default function SignInForm() {
-  const navigate = useNavigate();
-  const { setUser } = useAuthStore();
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<SignInFormValues>({ defaultValues: { email: "" } });
 
-  const [loading, setLoading] = useState(false);
-  const [isOtpRequested, setIsOtpRequested] = useState(false);
+  const { getOtp, signin, loading, isOtpRequested, handleGoogleSignIn } = useSignIn();
 
   const onSubmit = (data: SignInFormValues) => {
     if (isOtpRequested) signin(data);
-    else getOtp(data);
-  };
-
-  const signin = async (data: SignInFormValues) => {
-    setLoading(true);
-    try {
-      const response = await verifyOtpSignin({
-        email: data.email,
-        otp: data.otp,
-      });
-      setIsOtpRequested(true);
-      setUser(response.data.user);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getOtp = async (data: SignInFormValues) => {
-    setLoading(true);
-    try {
-      await getOtpSignin({ email: data.email });
-      setIsOtpRequested(true);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = () => {
-    try {
-      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
-    } catch (error) {
-      console.error(error);
-    }
+    else getOtp(data.email);
   };
 
   return (

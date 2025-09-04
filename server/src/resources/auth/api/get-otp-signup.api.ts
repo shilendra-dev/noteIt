@@ -19,12 +19,12 @@ export async function getOtpSignupAPI(fastify: TypedFastifyInstance) {
                 const { email } = request.body as RequestOtpSignupBody;
 
                 if(!email){
-                    return reply.code(400).send(Response.error(400, "EMAIL_REQUIRED"));
+                    return reply.code(400).send(Response.error(400, "Email is required"));
                 }
 
                 const user = await userExist(email);
                 if(user){
-                    return reply.code(409).send(Response.error(409, "USER_ALREADY_EXISTS"));
+                    return reply.code(409).send(Response.error(409, "User already exists"));
                 }
 
                 const otp = generateOtp();
@@ -36,7 +36,7 @@ export async function getOtpSignupAPI(fastify: TypedFastifyInstance) {
                 return reply.code(200).send(Response.success({}, 200, "OTP sent successfully"));
             }catch(error){
                 console.error(error);
-                return reply.code(500).send(Response.error(500, "OTP_SEND_FAILED"));
+                return reply.code(500).send(Response.error(500, "Failed to send OTP"));
             }
         },
     )

@@ -30,28 +30,28 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                 const dobDate = new Date(dob); 
 
                 if (!email) {
-                    return reply.code(400).send(Response.error(400, "EMAIL_REQUIRED"));
+                    return reply.code(400).send(Response.error(400, "Email is required"));
                 }
                 if (!dob) {
-                    return reply.code(400).send(Response.error(400, "DOB_REQUIRED"));  
+                    return reply.code(400).send(Response.error(400, "DOB is required"));  
                 }
                 if (!name) {
-                    return reply.code(400).send(Response.error(400, "NAME_REQUIRED"));
+                    return reply.code(400).send(Response.error(400, "Name is required"));
                 }
                 if (!otp) {
-                    return reply.code(400).send(Response.error(400, "OTP_REQUIRED"));
+                    return reply.code(400).send(Response.error(400, "OTP is required"));
                 }
 
                 const otpData = await fetchOTP({ email, type: "signup" });
 
                 if (!otpData) {
-                    return reply.code(409).send(Response.error(409, "EMAIL_OR_OTP_INVALID"));
+                    return reply.code(409).send(Response.error(409, "Email or OTP is invalid"));
                 }
 
                 const isOtpValid = await verifyOtp(otp, otpData.otpHash);
 
                 if (!isOtpValid) {
-                    return reply.code(409).send(Response.error(409, "OTP_INVALID"));
+                    return reply.code(409).send(Response.error(409, "OTP is invalid"));
                 }
 
                 // creating user
@@ -90,7 +90,7 @@ export async function verifyOtpSignupAPI(fastify: TypedFastifyInstance) {
                 return reply.code(200).send(Response.success({ user }, 200, "OTP verified successfully"));
             } catch (error) {
                 console.error(error);
-                return reply.code(500).send(Response.error(500, "OTP_VERIFY_FAILED"));
+                return reply.code(500).send(Response.error(500, "OTP verify failed"));
             }
         }
     )

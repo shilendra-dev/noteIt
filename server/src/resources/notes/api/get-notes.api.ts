@@ -15,7 +15,7 @@ export async function getNotesAPI(fastify: FastifyInstance) {
             }, 200, "Notes fetched successfully"));
         }catch(error){
             console.error(error);
-            return reply.code(500).send(Response.error(500, "FAILED_TO_FETCH_NOTES"));
+            return reply.code(500).send(Response.error(500, "Failed to fetch notes"));
         }
     });
 }

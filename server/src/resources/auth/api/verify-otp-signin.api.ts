@@ -26,26 +26,26 @@ export async function verifyOtpSigninAPI(fastify: TypedFastifyInstance) {
                 const { email, otp } = request.body as VerifyOtpBody;
 
                 if (!email) {
-                    return reply.code(400).send(Response.error(400, "EMAIL_REQUIRED"));
+                    return reply.code(400).send(Response.error(400, "Email is required"));
                 }
                 if (!otp) {
-                    return reply.code(400).send(Response.error(400, "OTP_REQUIRED"));
+                    return reply.code(400).send(Response.error(400, "OTP is required"));
                 }
 
                 const user = await fetchUserByEmail(email);
                 if (!user) {
-                    return reply.code(404).send(Response.error(404, "USER_NOT_FOUND"));
+                    return reply.code(404).send(Response.error(404, "User not found"));
                 }
 
                 const otpData = await fetchOTP({ email, type: "signin" });
 
                 if (!otpData) {
-                    return reply.code(400).send(Response.error(400, "EMAIL_OR_OTP_INVALID"));
+                    return reply.code(400).send(Response.error(400, "Email or OTP is invalid"));
                 }
 
                 const isOtpValid = await verifyOtp(otp, otpData.otpHash); 
                 if (!isOtpValid) {
-                    return reply.code(400).send(Response.error(400, "OTP_INVALID"));
+                    return reply.code(400).send(Response.error(400, "OTP is invalid"));
                 }
 
                 await deleteOTP(email); 
@@ -81,7 +81,7 @@ export async function verifyOtpSigninAPI(fastify: TypedFastifyInstance) {
                 return reply.code(200).send(Response.success({ user }, 200, "OTP verified successfully"));
             } catch (error) {
                 console.error(error);
-                return reply.code(500).send(Response.error(500, "OTP_VERIFY_FAILED"));
+                return reply.code(500).send(Response.error(500, "OTP verify failed"));
             }
         }
     )

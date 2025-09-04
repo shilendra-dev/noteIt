@@ -20,7 +20,7 @@ export async function getOtpSigninAPI(fastify: TypedFastifyInstance) {
 
                 const user = await userExist(email);
                 if (!user) {
-                    return reply.code(404).send(Response.error(404, "USER_NOT_FOUND"));
+                    return reply.code(404).send(Response.error(404, "User not found"));
                 }
 
                 const otp = generateOtp();
@@ -32,7 +32,7 @@ export async function getOtpSigninAPI(fastify: TypedFastifyInstance) {
                 return reply.code(200).send(Response.success({ success: true }, 200, "OTP sent successfully"));
             } catch (error) {
                 console.error(error);
-                return reply.code(500).send(Response.error(500, "OTP_SEND_FAILED"));
+                return reply.code(500).send(Response.error(500, "OTP send failed"));
             }
         }
     )

@@ -10,7 +10,7 @@ export async function createNoteAPI(fastify: FastifyInstance) {
             const { title } = req.body as { title: string };
 
             if(!title){
-                return reply.code(400).send(Response.error(400, "TITLE_REQUIRED"));
+                return reply.code(400).send(Response.error(400, "Title is required"));
             }
             
             const result = await addNote(user.id, title);
@@ -20,7 +20,7 @@ export async function createNoteAPI(fastify: FastifyInstance) {
             }, 200, "Note created successfully"));
         }catch(error){
             console.error(error);
-            return reply.code(500).send(Response.error(500, "FAILED_TO_CREATE_NOTE"));
+            return reply.code(500).send(Response.error(500, "Failed to create note"));
         }
     });
 }

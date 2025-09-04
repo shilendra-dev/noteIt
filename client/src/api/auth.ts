@@ -1,4 +1,4 @@
-import axiosInstance from "../lib/axiosInstance";
+import { apiCall } from "../utils/apiCall";
 
 interface RequestOtpSignupBody {
     email: string;
@@ -21,75 +21,31 @@ interface SigninBody {
 }
 
 export const getOtpSignup = async (body: RequestOtpSignupBody) => {
-    try {
-        const response = await axiosInstance.post(`/auth/request-otp-signup`, body);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
+    const data = await apiCall<{ message: string }>("post", "/auth/request-otp-signup", body);
+    return data;
 }
 
 export const verifyOtpSignup = async (body: SignupBody) => {
-    try {
-        const response = await axiosInstance.post(`/auth/verify-otp-signup`, body);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
+    const data = await apiCall<{ message: string }>("post", "/auth/verify-otp-signup", body);
+    return data;
 }
 
 export const getOtpSignin = async (body: RequestOtpSigninBody) => {
-    try {
-        const response = await axiosInstance.post(`/auth/request-otp-signin`, body);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
+    const data = await apiCall<{ message: string }>("post", "/auth/request-otp-signin", body);
+    return data;
 }
 
 export const verifyOtpSignin = async (body: SigninBody) => {
-    try {
-        const response = await axiosInstance.post(`/auth/verify-otp-signin`, body);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
+    const data = await apiCall<{ user: any, message: string }>("post", "/auth/verify-otp-signin", body);
+    return data;
 }
 
 export const signOut = async () => {
-    try {
-        await axiosInstance.post(`/auth/logout`);
-    } catch (error) {
-        console.error(error);
-    }
+    const data = await apiCall<{ message: string }>("post", "/auth/logout");
+    return data;
 }
 
 export const googleOauth = async () => {
-    try {
-        const response = await axiosInstance.get(`/auth/google`);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
-}
-
-export const googleRedirect = async () => {
-    try {
-        const response = await axiosInstance.get(`/auth/callback/google`);
-        return response.data;
-    } catch (error: any) {
-        const message = error.response?.data?.message || error.message;
-        console.error(message);
-        throw new Error(message);
-    }
+    const data = await apiCall<{ message: string }>("get", "/auth/google");
+    return data;
 }

@@ -10,7 +10,7 @@ export async function deleteNoteAPI(fastify: FastifyInstance) {
             const { id } = req.params as { id: string };
 
             if(!id){
-                return reply.code(400).send(Response.error(400, "ID_REQUIRED"));
+                return reply.code(400).send(Response.error(400, "ID is required"));
             }
             
             const result = await deleteNote(user.id, id);
@@ -21,7 +21,7 @@ export async function deleteNoteAPI(fastify: FastifyInstance) {
             }, 200, "Note deleted successfully"));
         } catch(error){
             console.error(error);
-            return reply.code(500).send(Response.error(500, "FAILED_TO_DELETE_NOTE"));
+            return reply.code(500).send(Response.error(500, "Failed to delete note"));
         }
     });
 }

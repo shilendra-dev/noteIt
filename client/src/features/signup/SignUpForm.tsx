@@ -6,12 +6,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { useState } from "react";
-import { getOtpSignup, verifyOtpSignup } from "../../api/auth";
-import { useNavigate } from "react-router";
-import { useAuthStore } from "../../stores/authStore";
 import GoogleAuthButton from "../../components/ui/atoms/GoogleAuthButton";
 import { OrSeparator } from "../../components/ui/atoms/OrSeperator";
+import { useSignUp } from "../../hooks/useSignUp";
 
 interface SignUpFormValues {
   email: string;
@@ -21,69 +18,19 @@ interface SignUpFormValues {
 }
 
 export default function SignUpForm() {
-  const navigate = useNavigate();
-  const { setUser } = useAuthStore();
-
   const { control, handleSubmit, register, formState: { errors }, getValues } = useForm<SignUpFormValues>({
     defaultValues: { name: "", email: "", dob: "" },
   });
 
-  const [loading, setLoading] = useState(false);
-  const [isOtpRequested, setIsOtpRequested] = useState(false);
+  const { getOtp, signup, handleGoogleSignUp, loading, isOtpRequested } = useSignUp();
 
-  const getOtp = async (data: SignUpFormValues) => {
-    setLoading(true);
-    try {
-      await getOtpSignup({ email: data.email });
-      setIsOtpRequested(true);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resendOtp = async () => {
-    setLoading(true);
-    try {
-      await getOtpSignup({ email: getValues("email") });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signup = async (data: SignUpFormValues) => {
-    setLoading(true);
-    try {
-      const dob = data.dob.toDate();
-      const response = await verifyOtpSignup({
-        email: data.email,
-        name: data.name,
-        dob,
-        otp: data.otp,
-      });
-      setUser(response.data.user);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+  const resendOtp = () => {
+    getOtp(getValues("email"));
   };
 
   const onSubmit = (data: SignUpFormValues) => {
     if (isOtpRequested) signup(data);
-    else getOtp(data);
-  };
-
-  const handleGoogleSignUp = () => {
-    try {
-      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
-    } catch (error) {
-      console.error(error);
-    }
+    else getOtp(data.email);
   };
 
   return (
