@@ -4,7 +4,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { config } from '@/config/config.js'
 import { createUser } from '@/resources/auth/queries/createUser.js'
 import jwt from "jsonwebtoken";
-import { fetchUserByEmail } from "../queries/fetchUserByEmail";
+import { fetchUserByEmail } from "../queries/fetchUserByEmail.js";
 
 export async function googleRedirectAPI(fastify: TypedFastifyInstance) {
     fastify.get(
